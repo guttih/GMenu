@@ -5,7 +5,6 @@
 
 #define GMENU_DEBUGGING  /*Comment this out to save memory, these functions are only used for debugging*/
 
-
 const byte FAIL = 255;  //Function was unsuccessful
 
 class MenuItem

@@ -12,8 +12,7 @@ GMenu::GMenu(const char *text, void (* runFunction)(MenuItem *item, boolean firs
     runFunctionPtr = runFunction;
 }
 
-
-//     from : http://playground.arduino.cc/Code/AvailableMemory     //
+//freeMemory is from : http://playground.arduino.cc/Code/AvailableMemory     //
 extern unsigned int __bss_end;
 extern unsigned int __heap_start;
 extern void *__brkval;
@@ -107,8 +106,7 @@ void GMenu::selectMenuItem(MenuItem *thisMenu, byte thisPage, const char keyPres
     processKey(keyPressed);
 }
  void GMenu::processKey(const char key){
-   
- 
+
    switch(key)
    {
      case '#' : printMenu(nav.getMenu(), nav.nextPage());

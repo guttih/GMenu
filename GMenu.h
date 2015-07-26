@@ -18,13 +18,9 @@
 #include <MenuItem.h>
 #include <MenuNavigation.h>
 
-
-
-
 class GMenu{
 
-    public:
-        
+    public:        
                     GMenu(const char *text, void (* runFunction)(MenuItem *item, boolean firstRunAfterKeyPressed), LiquidCrystal_I2C *lcd, Keypad *keypad);
                     ~GMenu();
         MenuItem *  getMainMenu()   { return m_mainMenu; };
@@ -47,9 +43,6 @@ class GMenu{
                         
         void (* runFunctionPtr)(MenuItem *item, boolean firstRunAfterKeyPressed);
 
-        
-        
-
     private:
         LiquidCrystal_I2C   *m_lcd;
         Keypad              *m_keypad;
@@ -58,15 +51,12 @@ class GMenu{
 void        printMenu(MenuItem *printMe, byte page);         
          MenuNavigation  nav;
          
-         
-    
 #ifdef GMENU_DEBUGGING
     public:
         void        serialPrintTree(){m_mainMenu->serialPrintTree(m_mainMenu, 0);}
         int         freeMemory();
 #endif
-         
-        
+      
 };
 
 

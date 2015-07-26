@@ -51,35 +51,6 @@ void MenuItem::freeMenu(MenuItem *item){
     
 }
 
-#ifdef GMENU_DEBUGGING
-void MenuItem::serialPrintTree(MenuItem * item, byte level)
-{
-    if (item == NULL) 
-        return;
-    for(byte b = 0; b < level; b++)
-        Serial.print("     ");
-    
-    MenuItem *parent;
-    parent = item->getParent(this);
-    if (parent)
-    {   byte index =  parent->getItemIndex(item);
-        if (index < 10) 
-            Serial.print(" ");
-        Serial.print(index);
-        Serial.print(".");
-    }
-
-    Serial.print(item->text);
-    Serial.println("");
-    
-    serialPrintTree(item->pFirstChild ,level + 1);
-    serialPrintTree(item->pNextSibling, level);    
-}
-#endif
-
-///    ////////////////////////////////////////////////////////     //
-
-
 byte MenuItem::pageCount(){
      int count = itemCount();
      if (count < 4) return 1;
@@ -91,15 +62,18 @@ byte MenuItem::itemCount(){
          return 0;
      return itemCount(pFirstChild) + 1;
  }
+ 
  byte MenuItem::itemCount(MenuItem *item){
      if (!item->pNextSibling)
          return 0;
      return itemCount(item->pNextSibling) + 1;
  }
-//returns the first item that has no sibling on the right
+ 
+//returns the first item that has no sibling
  MenuItem * MenuItem::findLastChild(){
         return findLastSibling((MenuItem*)this->pFirstChild);
  }
+ 
   MenuItem * MenuItem::findLastSibling(){
         return findLastSibling(this);
  }
@@ -112,15 +86,17 @@ byte MenuItem::itemCount(){
     else
         return findLastSibling((MenuItem *)item->pNextSibling);
  }
+ 
   MenuItem * MenuItem::addMenuItem(const char *addMe, byte functionIndex){
       MenuItem * ret = addMenuItem(newMenu(addMe));
       ret->m_functionIndex = functionIndex;
   }
+  
  MenuItem * MenuItem::addMenuItem(const char *addMe){
       return addMenuItem(newMenu(addMe));
   }
   MenuItem * MenuItem::addMenuItem(MenuItem *addMe){
-      MenuItem *menu =this;
+      MenuItem *menu = this;
        MenuItem *p;
       p = (MenuItem *)menu->pFirstChild;
       if (p == NULL)
@@ -146,6 +122,7 @@ byte MenuItem::itemCount(){
     
      return getAtHelper(item->pFirstChild, index);
  }
+ 
   MenuItem * MenuItem::getAtHelper(MenuItem *item, byte index){
     if(index == 0 || item == NULL)
         return item;
@@ -175,6 +152,7 @@ MenuItem * MenuItem::getParent(MenuItem * rootMenu /*usually main menu*/)
     
     return getParent(rootMenu->pFirstChild->pNextSibling);
 }
+
 //returns FAIL if nothing found
 //searches for item in 1. level items
 byte MenuItem::getItemIndex(MenuItem *item){
@@ -188,15 +166,40 @@ byte MenuItem::getItemIndex(MenuItem *item){
 
 byte MenuItem::getItemIndexHelper(MenuItem *sibling, MenuItem *findMe, byte index)
 { 
-    
     if (sibling == NULL)
         return FAIL;
+    
     if(sibling == findMe)
-    {
         return index;
-    }
+    
     return getItemIndexHelper(sibling->pNextSibling, findMe, index + 1 );
 }
 
+#ifdef GMENU_DEBUGGING
+void MenuItem::serialPrintTree(MenuItem * item, byte level)
+{
+    if (item == NULL) 
+        return;
+    
+    MenuItem *parent = item->getParent(this);
+    
+    for(byte b = 0; b < level; b++)
+        Serial.print("     ");
+    
+    if (parent)
+    {   byte index =  parent->getItemIndex(item);
+        if (index < 10) 
+            Serial.print(" ");
+        Serial.print(index);
+        Serial.print(".");
+    }
+
+    Serial.print(item->text);
+    Serial.println("");
+    
+    serialPrintTree(item->pFirstChild ,level + 1);
+    serialPrintTree(item->pNextSibling, level);    
+}
+#endif
  
  
