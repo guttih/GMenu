@@ -38,6 +38,7 @@ void MenuItem::freeMenu(MenuItem *item){
     
     if (item == NULL) 
         return;
+    
     free(item->text);
     item->text = NULL;
     
@@ -48,7 +49,6 @@ void MenuItem::freeMenu(MenuItem *item){
     item->pNextSibling = NULL;
     
     free(item);
-    
 }
 
 byte MenuItem::pageCount(){
@@ -201,5 +201,4 @@ void MenuItem::serialPrintTree(MenuItem * item, byte level)
     serialPrintTree(item->pNextSibling, level);    
 }
 #endif
- 
  

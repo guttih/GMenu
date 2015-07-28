@@ -2,9 +2,6 @@
 #include "GMenu.h"
 
 
-GMenu::~GMenu(){
-    m_mainMenu->destroy();
-}
 GMenu::GMenu(const char *text, void (* runFunction)(MenuItem *item, boolean firstRunAfterKeyPressed), LiquidCrystal_I2C *lcd, Keypad *keypad){
     m_lcd = lcd;
     m_keypad = keypad;
@@ -12,23 +9,9 @@ GMenu::GMenu(const char *text, void (* runFunction)(MenuItem *item, boolean firs
     runFunctionPtr = runFunction;
 }
 
-//freeMemory is from : http://playground.arduino.cc/Code/AvailableMemory     //
-extern unsigned int __bss_end;
-extern unsigned int __heap_start;
-extern void *__brkval;
-
-#ifdef GMENU_DEBUGGING
-int GMenu::freeMemory() {
-  int free_memory;
-
-  if((int)__brkval == 0)
-     free_memory = ((int)&free_memory) - ((int)&__bss_end);
-  else
-    free_memory = ((int)&free_memory) - ((int)__brkval);
-
-  return free_memory;
+GMenu::~GMenu(){
+    m_mainMenu->destroy();
 }
-#endif
 
 void GMenu:: printMain(){
 
@@ -57,7 +40,6 @@ void GMenu:: printMenu(MenuItem *printMe, byte page){
   
     printTitle(printMe->text);
 
-    //pItem = getAt(printMe, start);
     pItem = printMe->getAt(start);
     while(pItem && (offset < 3))
     {
@@ -75,6 +57,7 @@ void GMenu:: printMenu(MenuItem *printMe, byte page){
 int GMenu::centerX(const char *text){
     return (20-strlen(text))/2;
 }
+
 int GMenu::printTitle(const char *text){
     int offset, 
         center,
@@ -96,6 +79,7 @@ int GMenu::printTitle(const char *text){
       m_lcd->setCursor ( x, y );
       m_lcd->print(text);
  }
+ 
  void GMenu::print(byte x, byte y, int num){
       m_lcd->setCursor ( x, y );
       m_lcd->print(num);
@@ -116,8 +100,7 @@ void GMenu::selectMenuItem(MenuItem *thisMenu, byte thisPage, const char keyPres
               {
                 m_lastSelected = nav.getMenu()->getParent(getMainMenu());
                 if (m_lastSelected)
-                  printMenu(m_lastSelected, 0);
-                
+                  printMenu(m_lastSelected, 0);                
               }
                else 
                  printMenu(nav.getMenu(), nav.prevPage());
@@ -139,5 +122,20 @@ void GMenu::selectMenuItem(MenuItem *thisMenu, byte thisPage, const char keyPres
    }
 }
 
- 
-  
+//freeMemory is from : http://playground.arduino.cc/Code/AvailableMemory     //
+extern unsigned int __bss_end;
+extern unsigned int __heap_start;
+extern void *__brkval;
+
+#ifdef GMENU_DEBUGGING
+int GMenu::freeMemory() {
+  int free_memory;
+
+  if((int)__brkval == 0)
+     free_memory = ((int)&free_memory) - ((int)&__bss_end);
+  else
+    free_memory = ((int)&free_memory) - ((int)__brkval);
+
+  return free_memory;
+}
+#endif

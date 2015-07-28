@@ -1,8 +1,13 @@
 /*
-  GMenu.h - Library for displaying a Menu on a 20x4 LCD and
-  using a Keypad characters used ('0' - '9') and '*' and '#'
+  GMenu.h - Library for displaying a non-blocking Menu 
+  on a 20x4 LCD and using a Keypad.  
+  
+  The keypad characters used are 1, 2, 3 * and #
   Where '#' means next menu screen or enter and
         '*' means previous screen or cancel.
+        '1' means select the first  visible menu item
+        '2' means select the second visible menu item
+        '3' means select the third  visible menu item
 
   Created by : Gudjon Holm Sigurdsson
   My web-page: http://www.guttih.com
@@ -21,10 +26,13 @@
 class GMenu{
 
     public:        
-                    GMenu(const char *text, void (* runFunction)(MenuItem *item, boolean firstRunAfterKeyPressed), LiquidCrystal_I2C *lcd, Keypad *keypad);
+                    GMenu(  const char *text, 
+                            void (* runFunction)(MenuItem *item, boolean firstRunAfterKeyPressed), 
+                            LiquidCrystal_I2C *lcd, 
+                            Keypad *keypad);
                     ~GMenu();
-        MenuItem *  getMainMenu()   { return m_mainMenu; };
-        MenuItem *  geLastSelected()   { return m_lastSelected; };
+        MenuItem *  getMainMenu()      { return m_mainMenu;    }
+        MenuItem *  geLastSelected()   { return m_lastSelected;}
         MenuItem *  addMenuItem(MenuItem *menu, MenuItem *addMe);
        
         void        printPage();
