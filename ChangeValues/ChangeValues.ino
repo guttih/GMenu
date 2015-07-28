@@ -151,7 +151,7 @@ void viewRunning(boolean clearScreen)
 }
 
 //adds a space behind a number, also you can provide a unit which will be printed after the number
-void lcdPrintAndAddSpace(byte x, byte y, unsigned long num, byte spaceForNum, const char *strUnit){
+void lcdPrintAndAddSpace(byte x, byte y, unsigned long num, byte spaceForNumAndUnit, const char *strUnit){
     byte len = 0;
     lcd.setCursor(x, y);
     lcd.print(num);
@@ -162,15 +162,15 @@ void lcdPrintAndAddSpace(byte x, byte y, unsigned long num, byte spaceForNum, co
     }
 
     int nDigits = (int(log10(num))) + 1;
-    int spaces = spaceForNum - nDigits;
-    
+    int spaces = ((int)spaceForNumAndUnit) - nDigits;
+    spaces -= len;
     tempStr[0] = '\0';
-    for (int i = 0; i < (spaces-len); i++)
+    for (int i = 0; i < spaces; i++)
     {
         tempStr[i] = ' ';
         tempStr[i + 1] = '\0';
     }
-    
+
     lcd.print(tempStr);
 }
 
