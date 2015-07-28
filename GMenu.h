@@ -4,7 +4,7 @@
   
   The keypad characters used are 1, 2, 3 * and #
   Where '#' means next menu screen or enter and
-        '*' means previous screen or cancel.
+        '*' means previous menu screen or cancel.
         '1' means select the first  visible menu item
         '2' means select the second visible menu item
         '3' means select the third  visible menu item
